@@ -23,15 +23,14 @@ def all_houses(filename):
 
       first_name, last_name, house, advisor, cohort_name = attributes
 
-      if house not in houses and house != '':
+      if house != '':
         houses.add(house)
 
 
     return houses
 
-#print(all_houses("cohort_data.txt"))
 
-# def students_by_cohort(filename, cohort='All'):
+def students_by_cohort(filename, cohort='All'):
     """Return a list of students' full names by cohort.
 
     Names are sorted in alphabetical order. If a cohort isn't
@@ -59,22 +58,35 @@ def all_houses(filename):
       - list[list]: a list of lists
     """
 
-    # student_file = open(filename)
-    # students = []
+    student_file = open(filename)
+    students = []
 
-    # for line in student_file:
-    #   attributes = line.split ('|')
+    for line in student_file:
+      line = line.strip()
+      attributes = line.split ('|')
 
-    #   first_name, last_name, house, advisor, cohort_name = attributes
-    #   full_name = first_name + ' ' + last_name
+      # first_name, last_name, house, advisor, cohort_name = attributes
+      # full_name = first_name + ' ' + last_name
 
-    #   if cohort_name == 'I' or  cohort_name =='G':
-    #     pass
+      first_name = attributes[0]
+      last_name = attributes[1]
+      cohort_name = attributes[4]
+      full_name = attributes[0] + ' ' + attributes[1]
 
-    #   if cohort_name in ('All', cohort):
-    #     students.append(full_name)  
+      # if cohort_name in cohort or cohort_name in "All":
+      #   students.append(full_name)
 
-    # return sorted(students)
+      if cohort == ("All"):
+        if cohort_name == 'I' or  cohort_name =='G':
+          continue
+
+        else:
+          students.append(full_name)  
+        
+      if cohort == cohort_name:
+          students.append(full_name)  
+
+    return sorted(students)
 
 
 def all_names_by_house(filename):
@@ -107,6 +119,7 @@ def all_names_by_house(filename):
     Return:
       - list[list]: a list of lists
     """
+    student_file = open(filename)
 
     dumbledores_army = []
     gryffindor = []
@@ -116,37 +129,41 @@ def all_names_by_house(filename):
     ghosts = []
     instructors = []
 
-    student_file = open(filename)
-
     for line in student_file:
+      line = line.strip()
       attributes = line.split ('|')
-
-      first_name, last_name, house, advisor, cohort_name = attributes
-      full_name = first_name + ' ' + last_name
+      full_name = attributes[0] + ' ' + attributes[1]
+      house = attributes[2]
+      cohort_name = attributes[4]
         
-      if cohort_name == 'dumbledores_army':
-        dumbledores_army.append (full_name).sort()
+      if house == "Dumbledore's Army":
+        dumbledores_army.append(full_name)
       
-      if cohort_name == 'gryffindor':
-        gryffindor.append (full_name).sort()
+      if house == 'Gryffindor':
+        gryffindor.append(full_name)
 
-      if cohort_name == 'hufflepuff':
-        hufflepuff.append (full_name).sort()
+      if house == 'Hufflepuff':
+        hufflepuff.append(full_name)
 
-      if cohort_name == 'ravenclaw':
-        ravenclaw.append (full_name).sort()
+      if house == 'Ravenclaw':
+        ravenclaw.append(full_name)
 
-      if cohort_name == 'slytherin':
-        slytherin.append (full_name).sort()   
+      if house == 'Slytherin':
+        slytherin.append(full_name)
 
       if cohort_name == 'G':
-        ghosts.append (full_name).sort()
+        ghosts.append(full_name)
 
       if cohort_name == 'I':
-        instructors.append (full_name).sort()
+        instructors.append(full_name) 
 
-    master_file = [dumbledores_army,gryffindor,hufflepuff,ravenclaw,slytherin,ghosts,instructors]
-    return master_file
+    return [sorted(dumbledores_army), 
+            sorted(gryffindor), 
+            sorted(hufflepuff),
+            sorted(ravenclaw),
+            sorted(slytherin),
+            sorted(ghosts), 
+            sorted(instructors)]
 
 def all_data(filename):
     """Return all the data in a file.
@@ -168,12 +185,14 @@ def all_data(filename):
     """
 
     all_data = []
+    current_student = tupl()
 
     for line in student_file:
+      line = line.strip()
       attributes = line.split ('|')
 
-      first_name, last_name, house, advisor, cohort_name = attributes
-      full_name = first_name + ' ' + last_name
+      current_student = (f'{first_name},{last_name}', attributes[2],attributes[3],attributes[4]) 
+      all_data.append(current_student)
 
     return all_data
 
