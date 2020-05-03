@@ -19,13 +19,12 @@ def all_houses(filename):
     houses = set()
 
     for line in student_file:
-      attributes = line.split ('|')
-
-      first_name, last_name, house, advisor, cohort_name = attributes
-
+      line = line.strip()
+      attributes = line.split('|')
+      house = attributes[2]
+      
       if house != '':
         houses.add(house)
-
 
     return houses
 
@@ -62,19 +61,13 @@ def students_by_cohort(filename, cohort='All'):
     students = []
 
     for line in student_file:
-      line = line.strip()
-      attributes = line.split ('|')
-
-      # first_name, last_name, house, advisor, cohort_name = attributes
-      # full_name = first_name + ' ' + last_name
+      line = line.rstrip()
+      attributes = line.split('|')
 
       first_name = attributes[0]
       last_name = attributes[1]
       cohort_name = attributes[4]
       full_name = attributes[0] + ' ' + attributes[1]
-
-      # if cohort_name in cohort or cohort_name in "All":
-      #   students.append(full_name)
 
       if cohort == ("All"):
         if cohort_name == 'I' or  cohort_name =='G':
@@ -131,7 +124,7 @@ def all_names_by_house(filename):
 
     for line in student_file:
       line = line.strip()
-      attributes = line.split ('|')
+      attributes = line.split('|')
       full_name = attributes[0] + ' ' + attributes[1]
       house = attributes[2]
       cohort_name = attributes[4]
@@ -165,6 +158,7 @@ def all_names_by_house(filename):
             sorted(ghosts), 
             sorted(instructors)]
 
+
 def all_data(filename):
     """Return all the data in a file.
 
@@ -183,15 +177,21 @@ def all_data(filename):
     Return:
       - list[tuple]: a list of tuples
     """
+    student_file = open(filename)
 
     all_data = []
-    current_student = tupl()
+    current_student = ()
 
     for line in student_file:
       line = line.strip()
-      attributes = line.split ('|')
+      attributes = line.split('|')
+      last_name = attributes[0] + ' ' + attributes[1]
+      house = attributes[2]
+      advisor = attributes[3]
+      cohort_name = attributes[4]
 
-      current_student = (f'{first_name},{last_name}', attributes[2],attributes[3],attributes[4]) 
+      current_student = ((last_name), attributes[2],
+                            attributes[3],attributes[4]) 
       all_data.append(current_student)
 
     return all_data
@@ -218,7 +218,16 @@ def get_cohort_for(filename, name):
       - str: the person's cohort or None
     """
 
-    # TODO: replace this with your code
+    student_file = open(filename)
+
+    for line in student_file:
+      line = line.strip()
+      attributes = line.split('|')
+      full_name = attributes[0] + ' ' + attributes[1]
+      cohort_name = attributes[4]
+        
+      if full_name == name:
+        return cohort_name
 
 
 def find_duped_last_names(filename):
@@ -235,7 +244,22 @@ def find_duped_last_names(filename):
       - set[str]: a set of strings
     """
 
-    # TODO: replace this with your code
+    student_file = open(filename)
+    duplicate_names = set()
+    list_of_last_names = []
+
+    for line in student_file:
+      line = line.strip()
+      attributes = line.split('|')
+      last_name = attributes[1]
+
+      if last_name in list_of_last_names:
+        duplicate_names.add(last_name)
+
+      else:
+        list_of_last_names.append(last_name)
+
+    return duplicate_names
 
 
 def get_housemates_for(filename, name):
@@ -250,7 +274,14 @@ def get_housemates_for(filename, name):
     {'Angelina Johnson', ..., 'Seamus Finnigan'}
     """
 
-    # TODO: replace this with your code
+    student_file = open(filename)
+
+    for line in student_file:
+      line = line.strip()
+      attributes = line.split('|')
+      full_name = attributes[0] + ' ' + attributes[1]
+      house = attributes[2]
+
 
 
 ##############################################################################
